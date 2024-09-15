@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CV Form </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+            position: relative;
+            /* Ensure button is positioned relative to the container */
+        }
+
+        h1 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        fieldset {
+            border: 1px solid #adadad;
+            padding: 40px 30px 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        fieldset.with-btn {
+            padding-bottom: 70px;
+        }
+
+        legend {
+            font-weight: bold;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            padding: 0 10px;
+            color: #0056b3;
+            font-size: 18px;
+            background: #fff;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            padding: 0 10px;
+            border-radius: 4px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        .add-btn {
+            padding: 2px 15px;
+            position: absolute;
+            left: 25px;
+            bottom: 30px;
+        }
+
+        .remove-btn {
+            display: none;
+            padding: 2px 15px;
+            position: absolute;
+            left: 100px;
+            bottom: 30px;
+        }
+
+        #submit-btn {
+            letter-spacing: 1px;
+            background-color: #606060;
+            /* Light blue background */
+            color: rgb(255, 255, 255);
+            /* White text color for contrast */
+            border: 1px solid transparent;
+            /* No border, only background */
+            padding: 10px 0;
+            /* Padding for vertical height */
+            border-radius: 4px;
+            /* Slightly rounded corners */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+            font-size: 16px;
+            /* Font size */
+            font-weight: normal;
+            /* Normal font weight */
+            margin-bottom: 10px;
+            /* Space above the button */
+            width: 100%;
+            /* Full width of its container */
+            display: block;
+            /* Block-level element to span full width */
+            text-align: center;
+            /* Center text within the button */
+        }
+
+        #submit-btn:hover {
+            background-color: #464646;
+            /* Darker blue on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1> CV Form </h1>
+
+        <form action="/cv/register" method="post">
+            <fieldset>
+                <legend> Basic Info </legend>
+
+                <label for="fname"> First Name: </label>
+                <input type="text" name="fname" id="fname" maxlength="10" required />
+
+                <label for="occupation"> Occupation: </label>
+                <input type="text" name="occupation" id="occupation" maxlength="20" required />
+
+                <label for="address"> Address: </label>
+                <input type="text" name="address" id="address" maxlength="20" required />
+
+                <label for="email"> Email: </label>
+                <input type="email" name="email" id="email" required />
+
+                <label for="phone"> Phone: </label>
+                <input type="tel" name="phone" id="phone" required />
+            </fieldset>
+
+            <fieldset class="with-btn" id="experience">
+                <legend> Work Experience </legend>
+
+                <label for="job1"> Title 1: </label>
+                <input type="text" name="job1" id="job1" maxlength="20" required />
+
+                <label for="desc1"> Description 1: </label>
+                <textarea name="desc1" id="desc1" placeholder="Tell us a little about this Job." required></textarea>
+
+                <button type="button" class="add-btn" onclick="addExperience()"> Add </button>
+                <button type="button" class="remove-btn" id="rm-experience" onclick="removeExperience()"> Remove
+                </button>
+            </fieldset>
+
+            <fieldset class="with-btn" id="education">
+                <legend> Education </legend>
+
+                <label for="inst1"> Institution 1: </label>
+                <input type="text" name="inst1" id="inst1" required />
+
+                <label for="qual1"> Qualification 1: </label>
+                <input type="text" name="qual1" id="qual1" required placeholder="What did you study here?" />
+
+                <button type="button" class="add-btn" onclick="addEducation()"> Add </button>
+                <button type="button" class="remove-btn" id="rm-education" onclick="removeEducation()"> Remove </button>
+            </fieldset>
+
+            <button type="submit" id="submit-btn"> Submit </button>
+        </form>
+    </div>
+</body>
+
+<script>
+    let experienceCount = 1, eduCount = 1;
+
+    function addExperience() {
+        experienceCount++;
+        document.getElementById('rm-experience').style.display = 'block';
+
+        const experience = document.getElementById('experience');
+
+        const
+            jobLabel = document.createElement('label'),
+            textInput = document.createElement('input'),
+
+            descLabel = document.createElement('label'),
+            textArea = document.createElement('textarea');
+
+        jobLabel.setAttribute('for', `job${experienceCount}`);
+        jobLabel.id = `jobLabel${experienceCount}`;
+        jobLabel.textContent = `Title ${experienceCount}:`;
+
+        textInput.setAttribute('type', 'text');
+        textInput.setAttribute('name', `job${experienceCount}`);
+        textInput.setAttribute('id', `job${experienceCount}`);
+        textInput.setAttribute('maxlength', '20');
+        textInput.required = true;
+
+        descLabel.setAttribute('for', `desc${experienceCount}`);
+        descLabel.id = `descLabel${experienceCount}`;
+        descLabel.textContent = `Description ${experienceCount}:`;
+
+        textArea.setAttribute('name', `desc${experienceCount}`);
+        textArea.setAttribute('id', `desc${experienceCount}`);
+        textArea.setAttribute('placeholder', 'Tell us a little about this Job.');
+        textArea.required = true;
+
+        experience.appendChild(jobLabel);
+        experience.appendChild(textInput);
+        experience.appendChild(descLabel);
+        experience.appendChild(textArea);
+    }
+
+    function removeExperience() {
+        const experience = document.getElementById('experience');
+
+        const
+            jobLabel = document.getElementById(`jobLabel${experienceCount}`),
+            textInput = document.getElementById(`job${experienceCount}`),
+
+            descLabel = document.getElementById(`descLabel${experienceCount}`),
+            textArea = document.getElementById(`desc${experienceCount}`);
+
+        experience.removeChild(jobLabel);
+        experience.removeChild(textInput);
+        experience.removeChild(descLabel);
+        experience.removeChild(textArea);
+
+        experienceCount--;
+
+        if (experienceCount == 1)
+            document.getElementById('rm-experience').style.display = 'none';
+    }
+
+    function addEducation() {
+        eduCount++;
+        document.getElementById('rm-education').style.display = 'block';
+
+        const education = document.getElementById('education');
+
+        const
+            instLabel = document.createElement('label'),
+            instInput = document.createElement('input'),
+
+            qualLabel = document.createElement('label'),
+            qualInput = document.createElement('input');
+
+        instLabel.setAttribute('for', `inst${eduCount}`);
+        instLabel.id = `instLabel${eduCount}`;
+        instLabel.textContent = `Institution ${eduCount}:`;
+
+        instInput.setAttribute('type', 'text');
+        instInput.setAttribute('name', `inst${eduCount}`);
+        instInput.setAttribute('id', `inst${eduCount}`);
+        instInput.required = true;
+
+        qualLabel.setAttribute('for', `qual${eduCount}`);
+        qualLabel.id = `qualLabel${eduCount}`;
+        qualLabel.textContent = `Qualification ${eduCount}:`;
+
+        qualInput.setAttribute('name', `qual${eduCount}`);
+        qualInput.setAttribute('id', `qual${eduCount}`);
+        qualInput.setAttribute('placeholder', 'What did you study here?');
+        qualInput.required = true;
+
+        education.appendChild(instLabel);
+        education.appendChild(instInput);
+        education.appendChild(qualLabel);
+        education.appendChild(qualInput);
+    }
+
+    function removeEducation() {
+        const education = document.getElementById('education');
+
+        const
+            instLabel = document.getElementById(`instLabel${eduCount}`),
+            instInput = document.getElementById(`inst${eduCount}`),
+
+            qualLabel = document.getElementById(`qualLabel${eduCount}`),
+            qualInput = document.getElementById(`qual${eduCount}`);
+
+        education.removeChild(instLabel);
+        education.removeChild(instInput);
+        education.removeChild(qualLabel);
+        education.removeChild(qualInput);
+
+        eduCount--;
+
+        if (eduCount == 1)
+            document.getElementById('rm-education').style.display = 'none';
+    }
+</script>
+
+</html>
