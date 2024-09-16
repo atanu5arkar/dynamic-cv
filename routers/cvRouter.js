@@ -5,18 +5,13 @@ import CVModel from "../models/CV.js";
 
 const cvRouter = express.Router();
 
-cvRouter.use('/register', authMiddleware);
-
-cvRouter.get('/register', (req, res) => {
-    try {
-        return res.render('cvForm');
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ msg: 'Server Error' });
-    }
+// Protected Routes
+cvRouter.get('/register', authMiddleware, (req, res) => {
+    return res.render('cvForm');
 });
 
-cvRouter.post('/register', async (req, res) => {
+
+cvRouter.post('/register', authMiddleware, async (req, res) => {
     try {
         const formData = req.body
         const experience = [], education = [];
@@ -33,16 +28,55 @@ cvRouter.post('/register', async (req, res) => {
                 qualification: formData[`qual${i}`]
             });
         }
-        const { fname, occupation, email, phone } = formData;
+        const { fname, gender, address, occupation, email, phone, cpp, js, rust } = formData;
+        const languages = { cpp, js, rust };
 
         await new CVModel({
-            fname, occupation, email, phone, experience, education 
+            fname: fname.trim().toLowerCase(),
+            gender, address, occupation, email, phone, experience, education, languages
         }).save();
 
-        return res.render('cvForm');
+        return res.render('success');
     } catch (error) {
         console.log(error);
         return res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
+// Public Routes
+cvRouter.get('/search', (req, res) => {
+    return res.render('cvSearch');
+});
+
+cvRouter.get('/:fname', async (req, res) => {
+    try {
+        const { fname } = req.params;
+        
+        const cv = await CVModel.findOne({ fname: fname.trim().toLowerCase() });
+        if (!cv) return res.render('404');
+
+        const { gender, occupation, address, email, phone, experience, education, languages } = cv;
+
+        return res.render('cv', {
+            fname: fname.toUpperCase(),
+            gender, occupation, address, email, phone, experience, education, languages
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(302).json({ msg: 'Server Error' });
+    }
+});
+
+cvRouter.post('/search', async (req, res) => {
+    try {
+        const { fname } = req.body;
+        const cv = await CVModel.findOne({ fname: fname.trim().toLowerCase() });
+
+        if (!cv) return res.render('404');
+        return res.status(302).redirect(`/cv/${fname}`);
+    } catch (error) {
+        console.log(error);
+        return res.status(302).json({ msg: 'Server Error' });
     }
 })
 

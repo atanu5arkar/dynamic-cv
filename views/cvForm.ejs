@@ -11,6 +11,24 @@
 
         }
 
+        .nav-btn {
+            text-align: right;
+            margin: 20px 20px 0;
+        }
+
+        .nav-btn button {
+            border: 1px solid #808080;
+            background-color: #6b6b6b;
+            color: #fff;
+            border-radius: 10%;
+            padding: 8px 12px;
+        }
+
+        .nav-btn button:hover {
+            background-color: #393939;
+            color: #ededed;
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -70,7 +88,8 @@
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -135,6 +154,11 @@
 </head>
 
 <body>
+    <div class="nav-btn">
+        <a href="/logout">
+            <button type="button"> Logout </button>
+        </a>
+    </div>
     <div class="container">
         <h1> CV Form </h1>
 
@@ -144,6 +168,12 @@
 
                 <label for="fname"> First Name: </label>
                 <input type="text" name="fname" id="fname" maxlength="10" required />
+
+                <label for="gender"> Gender: </label>
+                <select name="gender" id="gender">
+                    <option value="male"> Man </option>
+                    <option value="female"> Woman </option>
+                </select>
 
                 <label for="occupation"> Occupation: </label>
                 <input type="text" name="occupation" id="occupation" maxlength="20" required />
@@ -183,6 +213,21 @@
 
                 <button type="button" class="add-btn" onclick="addEducation()"> Add </button>
                 <button type="button" class="remove-btn" id="rm-education" onclick="removeEducation()"> Remove </button>
+            </fieldset>
+
+            <fieldset>
+                <legend> Language Skills </legend>
+
+                <label for="cpp"> C++ </label>
+                <input type="range" name="cpp" id="cpp" value="30" />
+
+                <label for="js"> JavaScript </label>
+                <input type="range" name="js" id="js" value="80" />
+
+                <label for="rust"> Rust </label>
+                <input type="range" name="rust" id="rust" value="5" />
+
+                <p> range: (0 to 100) </p>
             </fieldset>
 
             <button type="submit" id="submit-btn"> Submit </button>

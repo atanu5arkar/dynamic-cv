@@ -5,7 +5,15 @@ const cvSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    gender: {
+        type: String,
+        required: true
+    },
     occupation: {
+        type: String,
+        required: true
+    },
+    address: {
         type: String,
         required: true
     },
@@ -40,7 +48,21 @@ const cvSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ]
+    ],
+    languages: {
+        cpp: {
+            type: String,
+            required: true
+        },
+        js: {
+            type: String,
+            required: true
+        },
+        rust: {
+            type: String,
+            required: true
+        }
+    }
 });
 
 const CVModel = mongoose.model('cv', cvSchema, 'cv');
