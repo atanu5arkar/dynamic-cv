@@ -56,11 +56,16 @@
 
                         <p class="w3-large"><b><i
                                     class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
-                        <p>Adobe Photoshop</p>
-                        <div class="w3-light-grey w3-round-xlarge w3-small">
-                            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:90%">90%</div>
-                        </div>
-                        <p>Photography</p>
+                        
+                        <% skills.forEach(skill => { %>
+                            <% const { label, range } = skill %>                            
+                            <p><%= label %></p>
+                            <div class="w3-light-grey w3-round-xlarge w3-small">
+                                <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:<%= range %>%"><%= range %>%</div>
+                            </div>
+                        <% }) %>
+                        
+                        <!-- <p>Photography</p>
                         <div class="w3-light-grey w3-round-xlarge w3-small">
                             <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:80%">
                                 <div class="w3-center w3-text-white">80%</div>
@@ -73,23 +78,27 @@
                         <p>Media</p>
                         <div class="w3-light-grey w3-round-xlarge w3-small">
                             <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-                        </div>
+                        </div> -->
                         <br>
 
                         <p class="w3-large w3-text-theme"><b><i
                                     class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-                        <p>C++</p>
-                        <div class="w3-light-grey w3-round-xlarge">
-                            <div class="w3-round-xlarge w3-teal" style="height:24px; width: <%=languages.cpp%>%"></div>
-                        </div>
-                        <p>JavaScript</p>
+
+                        <% languages.forEach(lang => { %>
+                            <% const { label, range } = lang %>                            
+                            <p><%= label %></p>
+                            <div class="w3-light-grey w3-round-xlarge">
+                                <div class="w3-round-xlarge w3-teal" style="height:24px; width: <%= range %>%"></div>
+                            </div>
+                        <% }) %>
+                        <!-- <p>JavaScript</p>
                         <div class="w3-light-grey w3-round-xlarge">
                             <div class="w3-round-xlarge w3-teal" style="height:24px; width: <%=languages.js%>%"></div>
                         </div>
                         <p>Rust</p>
                         <div class="w3-light-grey w3-round-xlarge">
                             <div class="w3-round-xlarge w3-teal" style="height:24px; width: <%=languages.rust%>%"></div>
-                        </div>
+                        </div> -->
                         <br>
                     </div>
                 </div><br>

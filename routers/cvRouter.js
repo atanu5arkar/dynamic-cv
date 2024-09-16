@@ -14,26 +14,41 @@ cvRouter.get('/register', authMiddleware, (req, res) => {
 cvRouter.post('/register', authMiddleware, async (req, res) => {
     try {
         const formData = req.body
-        const experience = [], education = [];
+        const skills = [], languages = [], experience = [], education = [];
 
+        // Fill up the skills array
+        for (let i = 1; `skill${i}` in formData; i++) {
+            skills.push({
+                label: formData[`skill${i}`],
+                range: formData[`skillRange${i}`]
+            });
+        }
+        // Fill up the languages array
+        for (let i = 1; `lang${i}` in formData; i++) {
+            languages.push({
+                label: formData[`lang${i}`],
+                range: formData[`langRange${i}`]
+            });
+        }
+        // Fill up the experience array
         for (let i = 1; `job${i}` in formData; i++) {
             experience.push({
                 job: formData[`job${i}`],
                 description: formData[`desc${i}`]
             });
         }
+        // Fill up the education array
         for (let i = 1; `inst${i}` in formData; i++) {
             education.push({
                 institute: formData[`inst${i}`],
                 qualification: formData[`qual${i}`]
             });
         }
-        const { fname, gender, address, occupation, email, phone, cpp, js, rust } = formData;
-        const languages = { cpp, js, rust };
+        const { fname, gender, address, occupation, email, phone } = formData;
 
         await new CVModel({
             fname: fname.trim().toLowerCase(),
-            gender, address, occupation, email, phone, experience, education, languages
+            gender, address, occupation, email, phone, skills, languages, experience, education
         }).save();
 
         return res.render('success');
@@ -51,16 +66,18 @@ cvRouter.get('/search', (req, res) => {
 cvRouter.get('/:fname', async (req, res) => {
     try {
         const { fname } = req.params;
-        
-        const cv = await CVModel.findOne({ fname: fname.trim().toLowerCase() });
+
+        const cv = await CVModel.findOne({ fname: fname.toLowerCase() });
         if (!cv) return res.render('404');
 
-        const { gender, occupation, address, email, phone, experience, education, languages } = cv;
+        const { gender, address, occupation, email, phone, skills, languages, experience, education } = cv;
+        // return res.render('cv', { ...cv, fname: fname.toUpperCase() });
 
         return res.render('cv', {
             fname: fname.toUpperCase(),
-            gender, occupation, address, email, phone, experience, education, languages
+            gender, address, occupation, email, phone, skills, languages, experience, education
         });
+
     } catch (error) {
         console.log(error);
         return res.status(302).json({ msg: 'Server Error' });
@@ -73,11 +90,11 @@ cvRouter.post('/search', async (req, res) => {
         const cv = await CVModel.findOne({ fname: fname.trim().toLowerCase() });
 
         if (!cv) return res.render('404');
-        return res.status(302).redirect(`/cv/${fname}`);
+        return res.status(302).redirect(`/cv/${fname.trim()}`);
     } catch (error) {
         console.log(error);
         return res.status(302).json({ msg: 'Server Error' });
     }
-})
+});
 
 export default cvRouter;

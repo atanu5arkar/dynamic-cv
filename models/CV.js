@@ -25,6 +25,30 @@ const cvSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    skills: [
+        {
+            label: {
+                type: String,
+                required: true
+            },
+            range: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    languages: [
+        {
+            label: {
+                type: String,
+                required: true
+            },
+            range: {
+                type: String,
+                required: true
+            }
+        }
+    ],
     experience: [
         {
             job: {
@@ -48,21 +72,7 @@ const cvSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ],
-    languages: {
-        cpp: {
-            type: String,
-            required: true
-        },
-        js: {
-            type: String,
-            required: true
-        },
-        rust: {
-            type: String,
-            required: true
-        }
-    }
+    ]
 });
 
 const CVModel = mongoose.model('cv', cvSchema, 'cv');
